@@ -1,0 +1,28 @@
+{
+    "listenPort": 8000,
+    "redisConnectionUri": "redis://localhost:6379/0",
+    "postgres": {
+        "host": "localhost",
+        "database": "language_trainer",
+        "username": "language_trainer_user",
+        "password": "language_trainer_password",
+        "port": 5432
+    },
+    "test": {
+        "listenPort": 8001,
+        "redisConnectionUri": "redis://localhost:6379/1",
+        "postgres": {
+            "host": "localhost",
+            "database": "language_trainer_test",
+            "username": "language_trainer_test_user",
+            "password": "language_trainer_test_password",
+            "port": 5432
+        }
+    },
+    "secret": "write-your-secret",
+    "tokenLife": 86400,
+    "expressDeliver":{
+        "printErrorStack": false,
+        "printInternalErrorData": false
+    }
+}

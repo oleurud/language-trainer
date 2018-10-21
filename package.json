@@ -1,0 +1,48 @@
+{
+  "name": "language-trainer",
+  "version": "0.0.1",
+  "description": "Language Trainer",
+  "main": "index.js",
+  "scripts": {
+    "init": "PGUSER=postgres ./config/db.sh language_trainer",
+    "init-test": "PGUSER=postgres ./config/db.sh language_trainer_test",
+    "cleandb": "PGUSER=postgres ./config/cleandb.sh language_trainer",
+    "cleandb-test": "PGUSER=postgres ./config/cleandb.sh language_trainer_test",
+    "test": "npm run init-test; TEST_MODE=1 DEBUG=app* node test/index.js; npm run lint; npm run cleandb-test;",
+    "dev-test": "TEST_MODE=1 DEBUG=app* nodemon test/index.js",
+    "dev": "DEBUG=app* nodemon index.js",
+    "lint": "eslint --ignore-path .gitignore src/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.1",
+    "bluebird": "^3.5.2",
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.4",
+    "debug": "^4.0.1",
+    "express": "^4.16.4",
+    "express-deliver": "^1.0.0",
+    "helmet": "^3.14.0",
+    "jsonwebtoken": "^8.3.0",
+    "morgan": "^1.9.1",
+    "pg": "^7.5.0",
+    "pg-hstore": "^2.3.2",
+    "redis": "^2.7.1",
+    "revalidator": "^0.3.1",
+    "sequelize": "^4.39.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "eslint": "^5.6.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "faker": "^4.1.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.4",
+    "supertest": "^3.3.0"
+  }
+}
