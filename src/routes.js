@@ -3,10 +3,12 @@
 const express = require('express')
 const expressDeliver = require('express-deliver')
 const auth = require('./services/auth/auth')
+const getContentMiddleware = require('./middlewares/getContent')
 
 const mainController = require('./controllers/mainController')
 const authController = require('./controllers/authController')
 const userController = require('./controllers/userController')
+const contentController = require('./controllers/contentController')
 
 module.exports = function (app) {
     // Test routes
@@ -29,4 +31,15 @@ module.exports = function (app) {
 
     userRouter.get('/', auth.validate, userController.getProfile)
     userRouter.put('/', auth.validate, userController.setProfile)
+
+    // Content routes
+    let contentRouter = express.Router({ mergeParams: true })
+    expressDeliver(contentRouter)
+    contentRouter.use(auth.validate)
+    app.use('/content', contentRouter)
+
+    contentRouter.get('/', contentController.getAll)
+    contentRouter.post('/', contentController.create)
+    contentRouter.get('/:contentSlug', getContentMiddleware(), contentController.getOne)
+    contentRouter.delete('/:contentSlug', getContentMiddleware(), contentController.remove)
 }

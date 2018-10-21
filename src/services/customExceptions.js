@@ -58,19 +58,9 @@ const exceptionPool = new ExceptionPool({
         message: 'Invalid change password',
         statusCode: 403
     },
-    ValidationNotImagesUploaded: {
-        code: 10200,
-        message: 'Not images uploaded',
-        statusCode: 405
-    },
-    ValidationImagesInvalidFormat: {
-        code: 10201,
-        message: 'Invalid image format (only jpg and png allowed)',
-        statusCode: 405
-    },
-    ValidationCollectionName: {
+    ValidationContentName: {
         code: 10300,
-        message: 'This collection name already exists',
+        message: 'This content name already exists',
         statusCode: 405
     },
     DatabaseError: {
@@ -78,44 +68,9 @@ const exceptionPool = new ExceptionPool({
         message: 'Database error',
         statusCode: 500
     },
-    NoPaymentsAddedValidation: {
-        code: 40000,
-        message: 'No payments methods added',
-        statusCode: 402
-    },
-    NoPaymentsActiveValidation: {
-        code: 40001,
-        message: 'No payments methods active',
-        statusCode: 402
-    },
-    PaymentsValidation: {
-        code: 40100,
-        message: 'Bad parameters adding payment method',
-        statusCode: 405
-    },
-    CollectionNotExists: {
+    ContentNotExists: {
         code: 50001,
-        message: 'Collection not exists',
-        statusCode: 404
-    },
-    CollectionUploadImagesError: {
-        code: 50002,
-        message: 'Error uploading images',
-        statusCode: 405
-    },
-    ImageNotExists: {
-        code: 50101,
-        message: 'Image not exists',
-        statusCode: 404
-    },
-    AnalysisAlreadyDone: {
-        code: 60001,
-        message: 'Analysis already done',
-        statusCode: 405
-    },
-    AnalysisNotExists: {
-        code: 60002,
-        message: 'The analysis does not exist',
+        message: 'Content not exists',
         statusCode: 404
     }
 })

@@ -22,6 +22,7 @@ appManager.on('appManager:app:ready', (app) => {
     mocha.addFile(__dirname + '/functional/index.js')
     mocha.addFile(__dirname + '/functional/auth.js')
     mocha.addFile(__dirname + '/functional/user.js')
+    mocha.addFile(__dirname + '/functional/content.js')
 
     // run tests
     mocha.run()
