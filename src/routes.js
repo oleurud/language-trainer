@@ -9,6 +9,7 @@ const mainController = require('./controllers/mainController')
 const authController = require('./controllers/authController')
 const userController = require('./controllers/userController')
 const contentController = require('./controllers/contentController')
+const topicController = require('./controllers/topicController')
 
 module.exports = function (app) {
     // Test routes
@@ -42,4 +43,16 @@ module.exports = function (app) {
     contentRouter.post('/', contentController.create)
     contentRouter.get('/:contentSlug', getContentMiddleware(), contentController.getOne)
     contentRouter.delete('/:contentSlug', getContentMiddleware(), contentController.remove)
+
+    // Topic routes
+    let topicRouter = express.Router({ mergeParams: true })
+    expressDeliver(topicRouter)
+    topicRouter.use(auth.validate)
+    topicRouter.use(getContentMiddleware())
+    contentRouter.use('/:contentSlug/topic', topicRouter)
+
+    topicRouter.get('/', topicController.getAll)
+    topicRouter.post('/', topicController.create)
+    topicRouter.get('/:topicSlug', topicController.getOne)
+    topicRouter.delete('/:topicSlug', topicController.remove)
 }

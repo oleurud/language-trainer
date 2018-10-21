@@ -63,6 +63,11 @@ const exceptionPool = new ExceptionPool({
         message: 'This content name already exists',
         statusCode: 405
     },
+    ValidationTopicName: {
+        code: 10400,
+        message: 'This topic name already exists',
+        statusCode: 405
+    },
     DatabaseError: {
         code: 20001,
         message: 'Database error',
@@ -70,6 +75,11 @@ const exceptionPool = new ExceptionPool({
     },
     ContentNotExists: {
         code: 50001,
+        message: 'Content not exists',
+        statusCode: 404
+    },
+    TopicNotExists: {
+        code: 50002,
         message: 'Content not exists',
         statusCode: 404
     }

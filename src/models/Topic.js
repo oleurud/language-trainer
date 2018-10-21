@@ -3,7 +3,7 @@
 const base = require('./_Base')
 
 module.exports = (sequelize, DataTypes) => {
-    let Content = sequelize.define('content', Object.assign({
+    let Topic = sequelize.define('topic', Object.assign({
         id: {
             type: DataTypes.INTEGER,
             autoIncrement: true,
@@ -31,31 +31,39 @@ module.exports = (sequelize, DataTypes) => {
         indexes: [
             {
                 unique: true,
-                fields: ['name']
+                fields: ['name', 'contentId']
             },
             {
                 unique: true,
-                fields: ['slug']
+                fields: ['slug', 'contentId']
             }
         ]
     })
 
-    Content.getAll = function ({ offset, limit }) {
+    Topic.associate = function (models) {
+        Topic.belongsTo(models.Content)
+    }
+
+    Topic.getAll = function (content, { offset, limit }) {
         return this.findAll({
+            where: {
+                contentId: content.id
+            },
             offset,
             limit
         })
     }
 
-    Content.getOneBySlug = function (slug) {
+    Topic.getOneBySlug = function (content, slug) {
         return this.findOne({
             where: {
+                contentId: content.id,
                 slug: slug
             }
         })
     }
 
-    Object.assign(Content.prototype, {
+    Object.assign(Topic.prototype, {
         getPublicInfo () {
             return {
                 name: this.name,
@@ -64,5 +72,5 @@ module.exports = (sequelize, DataTypes) => {
         }
     })
 
-    return Content
+    return Topic
 }
