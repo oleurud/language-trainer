@@ -4,6 +4,7 @@ const express = require('express')
 const expressDeliver = require('express-deliver')
 const auth = require('./services/auth/auth')
 const getContentMiddleware = require('./middlewares/getContent')
+const getTopicMiddleware = require('./middlewares/getTopic')
 
 const mainController = require('./controllers/mainController')
 const authController = require('./controllers/authController')
@@ -55,4 +56,15 @@ module.exports = function (app) {
     topicRouter.post('/', topicController.create)
     topicRouter.get('/:topicSlug', topicController.getOne)
     topicRouter.delete('/:topicSlug', topicController.remove)
+
+    // Sentence routes
+    let sentenceRouter = express.Router({ mergeParams: true })
+    expressDeliver(sentenceRouter)
+    contentRouter.use(auth.validate)
+    app.use('/sentence', sentenceRouter)
+
+    sentenceRouter.get('/content/:contentSlug', getContentMiddleware(), sentenceController.byContent)
+    sentenceRouter.get('/content/:contentSlug/topic/:topicSlug', getContentMiddleware(), getTopicMiddleware(), sentenceController.bySlug)
+    sentenceRouter.post('/content/:contentSlug/topic/:topicSlug', getContentMiddleware(), getTopicMiddleware(), sentenceController.create)
+    sentenceRouter.delete('/:sentenceId', sentenceController.remove)
 }
