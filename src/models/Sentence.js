@@ -35,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
         Sentence.belongsTo(models.Topic)
     }
 
+    Sentence.findOneById = function (id) {
+        return this.findOne({ where: { id } })
+    }
+
     Sentence.getAllByContent = function (content, { offset, limit }) {
         return this.findAll({
             where: {

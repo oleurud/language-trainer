@@ -2,7 +2,6 @@
 
 const Promise = require('bluebird')
 const Sentence = require('../appManager').models.Sentence
-const { slugify } = require('../services/utils')
 const exception = require('../services/customExceptions')
 
 module.exports = {
@@ -23,8 +22,8 @@ module.exports = {
         }
     },
 
-    async byTopic (content, pagination) {
-        const sentences = await Sentence.getAllByContent(content, pagination)
+    async byTopic (content, topic, pagination) {
+        const sentences = await Sentence.getAllByContentAndTopic(content, topic, pagination)
         const sentencesInfo = await Promise.all(
             Promise.map(sentences, async function (sentence) {
                 return sentence.getPublicInfo()
@@ -40,34 +39,32 @@ module.exports = {
         }
     },
 
-    async create (content, name) {
-        let topic = new Topic({
-            name: name,
-            slug: slugify(name),
-            contentId: content.id
+    async create (content, topic, source, translation) {
+        let sentence = new Sentence({
+            source,
+            translation,
+            contentId: content.id,
+            topicId: topic.id
         })
 
         try {
-            topic = await topic.save()
+            sentence = await sentence.save()
         } catch (err) {
-            if (err.name === 'SequelizeUniqueConstraintError') {
-                throw new exception.ValidationTopicName()
-            }
             throw new exception.SomethingWasWrong()
         }
 
-        return topic.getPublicInfo()
+        return sentence.getPublicInfo()
     },
 
-    async remove (content, contentSlug) {
-        let topic = await Topic.getOneBySlug(content, contentSlug)
+    async remove (sentenceId) {
+        let sentence = await Sentence.findOneById(sentenceId)
 
-        if (!topic) {
-            throw new exception.TopicNotExists()
+        if (!sentence) {
+            throw new exception.SentenceNotExists()
         }
 
-        topic.removed = true
-        topic.save()
+        sentence.removed = true
+        sentence.save()
 
         return true
     }

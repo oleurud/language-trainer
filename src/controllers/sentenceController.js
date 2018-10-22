@@ -14,10 +14,10 @@ module.exports = {
     },
 
     async create (req, res) {
-        return contentManager.create(res.locals.content, res.locals.topic, req.body.source, req.body.translation)
+        return sentenceManager.create(res.locals.content, res.locals.topic, req.body.source, req.body.translation)
     },
 
     async remove (req, res) {
-        return contentManager.remove(req.params.sentenceId)
+        return sentenceManager.remove(req.params.sentenceId)
     }
 }
