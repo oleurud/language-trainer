@@ -87,7 +87,7 @@ const exceptionPool = new ExceptionPool({
         code: 50003,
         message: 'Sentence not exists',
         statusCode: 404
-    },
+    }
 })
 
 module.exports = exceptionPool
