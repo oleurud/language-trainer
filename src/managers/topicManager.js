@@ -42,23 +42,11 @@ module.exports = {
         return topic.getPublicInfo()
     },
 
-    async getOne (content, topicSlug) {
-        const topic = await Topic.getOneBySlug(content, topicSlug)
-
-        if (!topic) {
-            throw new exception.TopicNotExists()
-        }
-
+    async getOne (topic) {
         return topic.getPublicInfo()
     },
 
-    async remove (content, contentSlug) {
-        let topic = await Topic.getOneBySlug(content, contentSlug)
-
-        if (!topic) {
-            throw new exception.TopicNotExists()
-        }
-
+    async remove (topic) {
         topic.removed = true
         topic.save()
 

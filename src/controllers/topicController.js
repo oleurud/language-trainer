@@ -14,10 +14,10 @@ module.exports = {
     },
 
     async getOne (req, res) {
-        return topicManager.getOne(res.locals.content, req.params.topicSlug)
+        return topicManager.getOne(res.locals.topic)
     },
 
     async remove (req, res) {
-        return topicManager.remove(res.locals.content, req.params.topicSlug)
+        return topicManager.remove(res.locals.topic)
     }
 }

@@ -11,6 +11,7 @@ const authController = require('./controllers/authController')
 const userController = require('./controllers/userController')
 const contentController = require('./controllers/contentController')
 const topicController = require('./controllers/topicController')
+const sentenceController = require('./controllers/sentenceController')
 
 module.exports = function (app) {
     // Test routes
@@ -54,8 +55,8 @@ module.exports = function (app) {
 
     topicRouter.get('/', topicController.getAll)
     topicRouter.post('/', topicController.create)
-    topicRouter.get('/:topicSlug', topicController.getOne)
-    topicRouter.delete('/:topicSlug', topicController.remove)
+    topicRouter.get('/:topicSlug', getTopicMiddleware(), topicController.getOne)
+    topicRouter.delete('/:topicSlug', getTopicMiddleware(), topicController.remove)
 
     // Sentence routes
     let sentenceRouter = express.Router({ mergeParams: true })
@@ -64,7 +65,7 @@ module.exports = function (app) {
     app.use('/sentence', sentenceRouter)
 
     sentenceRouter.get('/content/:contentSlug', getContentMiddleware(), sentenceController.byContent)
-    sentenceRouter.get('/content/:contentSlug/topic/:topicSlug', getContentMiddleware(), getTopicMiddleware(), sentenceController.bySlug)
+    sentenceRouter.get('/content/:contentSlug/topic/:topicSlug', getContentMiddleware(), getTopicMiddleware(), sentenceController.byTopic)
     sentenceRouter.post('/content/:contentSlug/topic/:topicSlug', getContentMiddleware(), getTopicMiddleware(), sentenceController.create)
     sentenceRouter.delete('/:sentenceId', sentenceController.remove)
 }

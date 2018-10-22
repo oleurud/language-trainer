@@ -5,10 +5,10 @@ const exception = require('../services/customExceptions')
 
 module.exports = function getTopic () {
     return async function (req, res, next) {
-        const topic = await Topic.getOneBySlug(req.params.topicSlug)
+        const topic = await Topic.getOneBySlug(res.locals.content, req.params.topicSlug)
 
         if (!topic) {
-            throw new exception.ContentNotExists()
+            throw new exception.TopicNotExists()
         }
 
         res.locals.topic = topic
