@@ -400,7 +400,7 @@ describe('FUNCTIONAL API - AUTH', function(){
             .set('X-device', 'aaa')
             .set('Authorization', validToken)
             .send(data)
-            .expect(403)
+            .expect(error.statusCode)
             .end(function(err,res){
                 expect(err).to.be.null
                 expect(res.body).to.deep.equal({

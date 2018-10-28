@@ -5,7 +5,7 @@ const redis = requireRoot('services/db/redis')
 const base = require('./_Base')
 const schemaValidator = require('../services/db/schemaValidator')
 
-function processPassword(user) {
+function processPassword (user) {
     const SALT_FACTOR = 5
 
     return new Promise((resolve, reject) => {
@@ -96,32 +96,32 @@ module.exports = (sequelize, DataTypes) => {
         }
 
     }, base), {
-            timestamps: true,
-            defaultScope: {
-                where: {
-                    removed: false,
-                    actived: true
-                }
+        timestamps: true,
+        defaultScope: {
+            where: {
+                removed: false,
+                actived: true
+            }
+        },
+        hooks: {
+            beforeCreate (user, options) {
+                return processPassword(user)
             },
-            hooks: {
-                beforeCreate(user, options) {
-                    return processPassword(user)
-                },
 
-                beforeUpdate(user, options) {
-                    if (user.changed('password')) {
-                        return processPassword(user)
-                    }
+            beforeUpdate (user, options) {
+                if (user.changed('password')) {
+                    return processPassword(user)
                 }
             }
-        })
+        }
+    })
 
     /*
      * INSTANCE METHODS
      */
     Object.assign(User.prototype, {
 
-        comparePassword(candidatePassword) {
+        comparePassword (candidatePassword) {
             return new Promise((resolve, reject) => {
                 bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
                     if (err || !isMatch) {
@@ -133,11 +133,11 @@ module.exports = (sequelize, DataTypes) => {
             })
         },
 
-        setPassword(password) {
+        setPassword (password) {
             this.password = password
         },
 
-        getPublicInfo() {
+        getPublicInfo () {
             let publicInfo = {
                 email: this.email,
                 username: this.username,
@@ -149,7 +149,7 @@ module.exports = (sequelize, DataTypes) => {
             return publicInfo
         },
 
-        getTokenByDevice(device) {
+        getTokenByDevice (device) {
             const redisKey = this.id + ':tokens'
             const redisClient = redis.getClient()
             return redisClient.getAsync(redisKey).then(tokensString => {
@@ -164,7 +164,7 @@ module.exports = (sequelize, DataTypes) => {
             })
         },
 
-        addToken(newToken, device) {
+        addToken (newToken, device) {
             const redisKey = this.id + ':tokens'
             const redisClient = redis.getClient()
             return redisClient.getAsync(redisKey)
@@ -201,17 +201,17 @@ module.exports = (sequelize, DataTypes) => {
                 })
         },
 
-        removeAllTokens() {
+        removeAllTokens () {
             const redisKey = this.id + ':tokens'
             const redisClient = redis.getClient()
             redisClient.del(redisKey)
         },
 
-        isSuperAdmin() {
+        isSuperAdmin () {
             return this.role === USER_TYPE_ADMIN
         },
 
-        getPaymentsInfo() {
+        getPaymentsInfo () {
             let paymentsInfo = []
             if (this.payments) {
                 paymentsInfo = this.payments.map((payment) => {

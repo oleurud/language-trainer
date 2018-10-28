@@ -41,7 +41,7 @@ const exceptionPool = new ExceptionPool({
     ValidationPassword: {
         code: 10007,
         message: 'Invalid password',
-        statusCode: 401
+        statusCode: 403
     },
     ValidationSuperadmin: {
         code: 10008,
