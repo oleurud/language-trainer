@@ -43,6 +43,11 @@ const exceptionPool = new ExceptionPool({
         message: 'Invalid password',
         statusCode: 403
     },
+    ValidationSuperadmin: {
+        code: 10008,
+        message: 'You do not have enough permissions',
+        statusCode: 403
+    },
     ValidationRegistration: {
         code: 10100,
         message: 'Invalid registration',

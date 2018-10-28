@@ -5,7 +5,7 @@ const redis = requireRoot('services/db/redis')
 const base = require('./_Base')
 const schemaValidator = require('../services/db/schemaValidator')
 
-function processPassword (user) {
+function processPassword(user) {
     const SALT_FACTOR = 5
 
     return new Promise((resolve, reject) => {
@@ -20,6 +20,10 @@ function processPassword (user) {
         })
     })
 }
+
+const USER_TYPE_CLIENT = 'Client'
+const USER_TYPE_ADMIN = 'SuperAdmin'
+const USER_TYPES = [USER_TYPE_CLIENT, USER_TYPE_ADMIN]
 
 module.exports = (sequelize, DataTypes) => {
     let User = sequelize.define('user', Object.assign({
@@ -44,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         role: {
             type: DataTypes.ENUM,
-            values: ['Client', 'SuperAdmin'],
+            values: USER_TYPES,
             defaultValue: 'Client',
             allowNull: false
         },
@@ -92,38 +96,32 @@ module.exports = (sequelize, DataTypes) => {
         }
 
     }, base), {
-        timestamps: true,
-        defaultScope: {
-            where: {
-                removed: false,
-                actived: true
-            }
-        },
-        hooks: {
-            beforeCreate (user, options) {
-                return processPassword(user)
+            timestamps: true,
+            defaultScope: {
+                where: {
+                    removed: false,
+                    actived: true
+                }
             },
-
-            beforeUpdate (user, options) {
-                if (user.changed('password')) {
+            hooks: {
+                beforeCreate(user, options) {
                     return processPassword(user)
+                },
+
+                beforeUpdate(user, options) {
+                    if (user.changed('password')) {
+                        return processPassword(user)
+                    }
                 }
             }
-        }
-    })
-
-    // Associate example
-    // Country.associate = function (models) {
-    //     Country.belongsTo(models.Project)
-    //     Country.belongsTo(models.Cid)
-    // }
+        })
 
     /*
      * INSTANCE METHODS
      */
     Object.assign(User.prototype, {
 
-        comparePassword (candidatePassword) {
+        comparePassword(candidatePassword) {
             return new Promise((resolve, reject) => {
                 bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
                     if (err || !isMatch) {
@@ -135,11 +133,11 @@ module.exports = (sequelize, DataTypes) => {
             })
         },
 
-        setPassword (password) {
+        setPassword(password) {
             this.password = password
         },
 
-        getPublicInfo () {
+        getPublicInfo() {
             let publicInfo = {
                 email: this.email,
                 username: this.username,
@@ -151,7 +149,7 @@ module.exports = (sequelize, DataTypes) => {
             return publicInfo
         },
 
-        getTokenByDevice (device) {
+        getTokenByDevice(device) {
             const redisKey = this.id + ':tokens'
             const redisClient = redis.getClient()
             return redisClient.getAsync(redisKey).then(tokensString => {
@@ -166,7 +164,7 @@ module.exports = (sequelize, DataTypes) => {
             })
         },
 
-        addToken (newToken, device) {
+        addToken(newToken, device) {
             const redisKey = this.id + ':tokens'
             const redisClient = redis.getClient()
             return redisClient.getAsync(redisKey)
@@ -203,13 +201,17 @@ module.exports = (sequelize, DataTypes) => {
                 })
         },
 
-        removeAllTokens () {
+        removeAllTokens() {
             const redisKey = this.id + ':tokens'
             const redisClient = redis.getClient()
             redisClient.del(redisKey)
         },
 
-        getPaymentsInfo () {
+        isSuperAdmin() {
+            return this.role === USER_TYPE_ADMIN
+        },
+
+        getPaymentsInfo() {
             let paymentsInfo = []
             if (this.payments) {
                 paymentsInfo = this.payments.map((payment) => {

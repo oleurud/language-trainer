@@ -8,7 +8,7 @@ const User = requireRoot('appManager').models.User
 
 module.exports = {
 
-    async validate (req, res, next) {
+    async validate(req, res, next) {
         const token = req.get('Authorization')
 
         // verify token
@@ -45,10 +45,18 @@ module.exports = {
         res.locals.user = user
 
         next()
+    },
+
+    superadmin(req, res, next) {
+        if (!res.locals.user || !res.locals.user.isSuperAdmin()) {
+            throw new exception.ValidationSuperadmin()
+        }
+
+        next()
     }
 }
 
-function verifyInRedis (tokenReceived, userId, device) {
+function verifyInRedis(tokenReceived, userId, device) {
     const redisKey = userId + ':tokens'
 
     return redisClient.getAsync(redisKey).then(tokensString => {
