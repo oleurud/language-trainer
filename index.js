@@ -4,7 +4,7 @@ const path = require('path')
 
 //Globals definition
 global.requireRoot = function (name) {
-    return require(path.resolve('src/', name))
+    return require(path.resolve(__dirname, 'src/', name))
 }
 
 // Basic includes
