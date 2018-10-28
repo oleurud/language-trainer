@@ -42,7 +42,7 @@ module.exports = {
             throw new exception.ValidationPublicKeyFailed()
         }
 
-        req.user = user
+        res.locals.user = user
 
         next()
     }
