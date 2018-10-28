@@ -42,9 +42,9 @@ module.exports = function (app) {
     app.use('/content', contentRouter)
 
     contentRouter.get('/', contentController.getAll)
-    contentRouter.post('/', contentController.create)
-    contentRouter.get('/:contentSlug', getContentMiddleware(), contentController.getOne)
-    contentRouter.delete('/:contentSlug', getContentMiddleware(), contentController.remove)
+    contentRouter.post('/', auth.superadmin, contentController.create)
+    contentRouter.get('/:contentSlug', auth.superadmin, getContentMiddleware(), contentController.getOne)
+    contentRouter.delete('/:contentSlug', auth.superadmin, getContentMiddleware(), contentController.remove)
 
     // Topic routes
     let topicRouter = express.Router({ mergeParams: true })
@@ -54,18 +54,18 @@ module.exports = function (app) {
     contentRouter.use('/:contentSlug/topic', topicRouter)
 
     topicRouter.get('/', topicController.getAll)
-    topicRouter.post('/', topicController.create)
-    topicRouter.get('/:topicSlug', getTopicMiddleware(), topicController.getOne)
-    topicRouter.delete('/:topicSlug', getTopicMiddleware(), topicController.remove)
+    topicRouter.post('/', auth.superadmin, topicController.create)
+    topicRouter.get('/:topicSlug', auth.superadmin, getTopicMiddleware(), topicController.getOne)
+    topicRouter.delete('/:topicSlug', auth.superadmin, getTopicMiddleware(), topicController.remove)
 
     // Sentence routes
     let sentenceRouter = express.Router({ mergeParams: true })
     expressDeliver(sentenceRouter)
-    contentRouter.use(auth.validate)
+    sentenceRouter.use(auth.validate)
     app.use('/sentence', sentenceRouter)
 
     sentenceRouter.get('/content/:contentSlug', getContentMiddleware(), sentenceController.byContent)
     sentenceRouter.get('/content/:contentSlug/topic/:topicSlug', getContentMiddleware(), getTopicMiddleware(), sentenceController.byTopic)
-    sentenceRouter.post('/content/:contentSlug/topic/:topicSlug', getContentMiddleware(), getTopicMiddleware(), sentenceController.create)
-    sentenceRouter.delete('/:sentenceId', sentenceController.remove)
+    sentenceRouter.post('/content/:contentSlug/topic/:topicSlug', auth.superadmin, getContentMiddleware(), getTopicMiddleware(), sentenceController.create)
+    sentenceRouter.delete('/:sentenceId', auth.superadmin, sentenceController.remove)
 }

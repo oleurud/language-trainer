@@ -116,6 +116,10 @@ module.exports = (sequelize, DataTypes) => {
         }
     })
 
+    User.findByEmail = function (email) {
+        return this.findOne({ where: { email } })
+    }
+
     /*
      * INSTANCE METHODS
      */

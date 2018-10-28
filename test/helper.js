@@ -7,11 +7,18 @@ module.exports = {
         const redisClient = redis.getClient()
         await redisClient.flushdbAsync()
 
-        const models = requireRoot('../src/appManager').models
+        const models = requireRoot('./appManager').models
         for (let modelName in models) {
             await models[modelName].destroy({ where: {}})
         }
 
         return
+    },
+
+    async getSuperAdminUser(email) {
+        const User = requireRoot('./appManager').models.User
+        let user = await User.findByEmail(email)
+        user.role = 'SuperAdmin'
+        user.save()
     }
 }
