@@ -6,42 +6,42 @@ const exceptionPool = new ExceptionPool({
     SomethingWasWrong: {
         code: 666,
         message: 'Something was wrong',
-        statusCode: 405
+        statusCode: 500
     },
     ValidationFailed: {
         code: 10001,
         message: 'Authentication failed',
-        statusCode: 403
+        statusCode: 401
     },
     ValidationPublicKeyFailed: {
         code: 10002,
         message: 'Authentication failed',
-        statusCode: 403
+        statusCode: 401
     },
     ValidationDeviceFailed: {
         code: 10003,
         message: 'You must set a device',
-        statusCode: 403
+        statusCode: 401
     },
     ValidationTokenExpired: {
         code: 10004,
         message: 'Token expired',
-        statusCode: 403
+        statusCode: 401
     },
     ValidationEmail: {
         code: 10005,
         message: 'Invalid email',
-        statusCode: 403
+        statusCode: 401
     },
     ValidationUsername: {
         code: 10006,
         message: 'Invalid username',
-        statusCode: 403
+        statusCode: 401
     },
     ValidationPassword: {
         code: 10007,
         message: 'Invalid password',
-        statusCode: 403
+        statusCode: 401
     },
     ValidationSuperadmin: {
         code: 10008,
@@ -51,7 +51,7 @@ const exceptionPool = new ExceptionPool({
     ValidationRegistration: {
         code: 10100,
         message: 'Invalid registration',
-        statusCode: 403
+        statusCode: 401
     },
     ValidationLogin: {
         code: 10101,
@@ -61,7 +61,7 @@ const exceptionPool = new ExceptionPool({
     ValidationChangePassword: {
         code: 10102,
         message: 'Invalid change password',
-        statusCode: 403
+        statusCode: 401
     },
     ValidationContentName: {
         code: 10300,
