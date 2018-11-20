@@ -24,7 +24,7 @@ function initConnection () {
 }
 
 function initModels (sequelize) {
-    const MODELS_PATH = path.resolve('src/models')
+    const MODELS_PATH = path.resolve(__dirname, '../../models')
 
     const modelNames = fs.readdirSync(MODELS_PATH)
         .map(file => {

@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
                 removed: false
             },
             order: [
-                ['id', 'DESC']
+                ['id', 'ASC']
             ]
         },
         indexes: [
