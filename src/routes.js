@@ -23,7 +23,7 @@ module.exports = function (app) {
     expressDeliver(authRouter)
     app.use('/auth', authRouter)
 
-    authRouter.post('/register', authController.register)
+    authRouter.post('/register', auth.validate, auth.superadmin, authController.register)
     authRouter.post('/login', authController.login)
     authRouter.post('/change-password', auth.validate, authController.changePassword)
 
