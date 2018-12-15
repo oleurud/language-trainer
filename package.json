@@ -24,7 +24,7 @@
     "express": "^4.16.4",
     "express-deliver": "^1.0.0",
     "helmet": "^3.14.0",
-    "jsonwebtoken": "^8.3.0",
+    "jsonwebtoken": "^8.4.0",
     "morgan": "^1.9.1",
     "pg": "^7.5.0",
     "pg-hstore": "^2.3.2",
