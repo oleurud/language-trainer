@@ -20,7 +20,7 @@
     "bluebird": "^3.5.3",
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
-    "debug": "^4.0.1",
+    "debug": "^4.1.1",
     "express": "^4.16.4",
     "express-deliver": "^1.0.0",
     "helmet": "^3.14.0",
