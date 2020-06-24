@@ -23,7 +23,7 @@
     "debug": "^4.0.1",
     "express": "^4.16.4",
     "express-deliver": "^1.0.0",
-    "helmet": "^3.14.0",
+    "helmet": "^3.23.2",
     "jsonwebtoken": "^8.3.0",
     "morgan": "^1.9.1",
     "pg": "^7.7.1",
